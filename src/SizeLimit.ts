@@ -16,6 +16,9 @@ const EmptyResult = {
   loading: 0,
   total: 0
 };
+function countCharacter(str:string, char:string) {
+  return str.split('').reduce((a, x) => x === char ? ++a : a, 0);
+}
 
 class SizeLimit {
   static SIZE_RESULTS_HEADER = ["Path", "Size"];
@@ -136,7 +139,8 @@ class SizeLimit {
     base: { [name: string]: IResult },
     current: { [name: string]: IResult }
   ): Array<Array<string>> {
-    const names = [...new Set([...Object.keys(base), ...Object.keys(current)])];
+    let names = [...new Set([...Object.keys(base), ...Object.keys(current)])];
+    names = names.filter(name => countCharacter(name,'-') < 2)
     const isSize = names.some(
       (name: string) => current[name] && current[name].total === undefined
     );
